@@ -4,6 +4,7 @@ export const BooksContext = createContext();
 
 export const BooksProvider = ({ children }) => {
   const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(
@@ -24,11 +25,12 @@ export const BooksProvider = ({ children }) => {
           })),
         ),
       )
-      .catch((error) => console.error("Error loading books:", error));
+      .catch((error) => console.error("Error loading books:", error))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
-    <BooksContext.Provider value={{ books, setBooks }}>
+    <BooksContext.Provider value={{ books, setBooks, loading }}>
       {children}
     </BooksContext.Provider>
   );
